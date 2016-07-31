@@ -1,0 +1,35 @@
+{
+  "name": "mysql-query-observable",
+  "version": "1.0.0",
+  "description": "function that creates Rx observable from query",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava test/",
+    "syntax": "standard | snazzy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex0007/mysql-query-observable.git"
+  },
+  "keywords": [
+    "rx",
+    "mysql",
+    "observable"
+  ],
+  "author": "Alex0007",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alex0007/mysql-query-observable/issues"
+  },
+  "homepage": "https://github.com/Alex0007/mysql-query-observable#readme",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "pg": "^6.0.3",
+    "rx": "^4.1.0"
+  },
+  "devDependencies": {
+    "ava": "^0.15.2",
+    "snazzy": "^4.0.0",
+    "standard": "^7.1.2"
+  }
+}
