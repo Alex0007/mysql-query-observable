@@ -1,7 +1,7 @@
 let test = require('ava')
 let createObservableFromQuery = require('../')
 
-test.cb(t => {
+test.cb('test if basic query working', t => {
   createObservableFromQuery(`
     SELECT * FROM item ORDER BY id ASC LIMIT 2
   `).toArray()
