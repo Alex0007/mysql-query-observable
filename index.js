@@ -3,7 +3,7 @@
  */
 
 let pg = require('pg')
-let Rx = require('rx')
+let Rx = require('rxjs/Rx')
 let debug = require('debug')('mysql-query-observable')
 
 let pool = new pg.Pool({
@@ -42,15 +42,15 @@ let createPoolClient = () => new Promise((resolve, reject) => {
   }
 })
 
-module.exports = (queryString) => Rx.Observable
-  .just(1)
+module.exports = queryString => Rx.Observable
+  .of(1)
   .flatMap(() => createPoolClient())
   .flatMap(client => Rx.Observable.create(o => {
     let nextCalled = false // https://github.com/ReactiveX/RxJava/issues/3613
 
     let done = () => {
-      if (!nextCalled) o.onNext(null)
-      o.onCompleted()
+      if (!nextCalled) o.next(null)
+      o.complete()
     }
 
     if (!queryString) return done()
@@ -61,10 +61,10 @@ module.exports = (queryString) => Rx.Observable
 
     query.on('row', row => {
       nextCalled = true
-      o.onNext(row)
+      o.next(row)
     })
 
-    query.on('error', err => o.onError(err))
+    query.on('error', err => o.error(err))
 
     query.on('end', () => done())
 
