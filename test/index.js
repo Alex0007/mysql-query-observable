@@ -1,7 +1,7 @@
 let test = require('ava')
 let createObservableFromQuery = require('../')
 
-test.cb('test if basic query working', t => {
+test('test if basic query working', t => {
   t.plan(2)
 
   return createObservableFromQuery(`
