@@ -8,11 +8,11 @@
 
 ### Example
 ```console
-$ npm i -S mysql-query-observable
+$ npm install --save mysql-query-observable
 ```
 
 ```js
-import createObservableFromQuery from 'mysql-query-observable'
+import {createObservableFromQuery} from 'mysql-query-observable'
 
 createObservableFromQuery(`
   SELECT * FROM item ORDER BY id ASC LIMIT 2
