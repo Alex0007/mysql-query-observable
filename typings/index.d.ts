@@ -1,12 +1,8 @@
-import * as Rx from 'rxjs/Rx'
+declare module "mysql-query-observable" {
+  import Rx = require('rxjs/Rx')
 
-/**
- * Creates RxJS observable from SQL query
- */
-export interface createObservableFromQuery<T> {
-  (query: string): Rx.Observable<T>
-}
-
-declare module 'mysql-query-observable' {
-  export = createObservableFromQuery
+  /**
+   * Creates RxJS observable from SQL query
+   */
+  export function createObservableFromQuery<T>(query: string): Rx.Observable<T>
 }
