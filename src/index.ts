@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx'
 import * as Debug from 'debug'
 
 const debug = Debug('mysql-query-observable')
-const noop = () => { }
+const noop = () => undefined
 
 const pool = new pg.Pool({
   max: 100,
@@ -44,16 +44,11 @@ export const createObservableFromQuery = (queryString) => {
 
         const query = client.query(queryString, noop)
 
-        query.on('row', (row) => {
-          nextCalled = true
-          o.next(row)
-        })
+        query.on('row', (row) => o.next(row))
+        query.on('error', (err) => o.error(err))
+        query.on('end', () => o.complete())
 
-        query.on('error', (err: Error) => o.error(err))
-
-        query.on('end', done)
-
-        return () => { client.end() }
+        return noop
       })
     })
 }

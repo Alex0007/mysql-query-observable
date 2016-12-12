@@ -3,7 +3,7 @@ const pg = require("pg");
 const Rx = require("rxjs/Rx");
 const Debug = require("debug");
 const debug = Debug('mysql-query-observable');
-const noop = () => { };
+const noop = () => undefined;
 const pool = new pg.Pool({
     max: 100,
     idleTimeoutMillis: 500
@@ -38,13 +38,10 @@ exports.createObservableFromQuery = (queryString) => {
             }
             debug(`Executing query: ${queryString.substring(0, 300)}${queryString.length <= 300 ? '' : '...'}`);
             const query = client.query(queryString, noop);
-            query.on('row', (row) => {
-                nextCalled = true;
-                o.next(row);
-            });
+            query.on('row', (row) => o.next(row));
             query.on('error', (err) => o.error(err));
-            query.on('end', done);
-            return () => { client.end(); };
+            query.on('end', () => o.complete());
+            return noop;
         });
     });
 };
