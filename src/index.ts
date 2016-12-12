@@ -1,5 +1,5 @@
 import * as pg from 'pg'
-import * as Rx from 'rxjs/Rx'
+import {Observable, Observer} from 'rxjs'
 import * as Debug from 'debug'
 
 const debug = Debug('mysql-query-observable')
@@ -27,10 +27,10 @@ const poolClientInit: Promise<pg.Client> = new Promise((resolve, reject) => {
 })
 
 export const createObservableFromQuery = (queryString) => {
-  return Rx.Observable.of(0)
+  return Observable.of(0)
     .flatMap(() => poolClientInit)
     .flatMap((client) => {
-      return Rx.Observable.create(o => {
+      return Observable.create((o: Observer<any>) => {
         let nextCalled: boolean = false // https://github.com/ReactiveX/RxJava/issues/3613
 
         const done = () => {

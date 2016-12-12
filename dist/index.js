@@ -1,7 +1,6 @@
-"use strict";
-const pg = require("pg");
-const Rx = require("rxjs/Rx");
-const Debug = require("debug");
+import * as pg from 'pg';
+import { Observable } from 'rxjs';
+import * as Debug from 'debug';
 const debug = Debug('mysql-query-observable');
 const noop = () => undefined;
 const pool = new pg.Pool({
@@ -22,12 +21,12 @@ const poolClientInit = new Promise((resolve, reject) => {
     });
     setTimeout(() => reject(new Error('Pool creation timeout')), POOL_CREATION_TIMEOUT);
 });
-exports.createObservableFromQuery = (queryString) => {
-    return Rx.Observable.of(0)
+export const createObservableFromQuery = (queryString) => {
+    return Observable.of(0)
         .flatMap(() => poolClientInit)
         .flatMap((client) => {
-        return Rx.Observable.create(o => {
-            let nextCalled = false;
+        return Observable.create((o) => {
+            let nextCalled = false; // https://github.com/ReactiveX/RxJava/issues/3613
             const done = () => {
                 if (!nextCalled)
                     o.next(null);
@@ -45,5 +44,4 @@ exports.createObservableFromQuery = (queryString) => {
         });
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = exports.createObservableFromQuery;
+export default createObservableFromQuery;
