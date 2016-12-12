@@ -31,22 +31,18 @@ export const createObservableFromQuery = (queryString) => {
     .flatMap(() => poolClientInit)
     .flatMap((client) => {
       return Observable.create((o: Observer<any>) => {
-        let nextCalled: boolean = false // https://github.com/ReactiveX/RxJava/issues/3613
-
-        const done = () => {
-          if (!nextCalled) o.next(null)
-          o.complete()
-        }
-
-        if (!queryString) { return done() }
+        if (!queryString) { return o.complete() }
 
         debug(`Executing query: ${queryString.substring(0, 300)}${queryString.length <= 300 ? '' : '...'}`)
 
-        const query = client.query(queryString, noop)
+        const query = client.query(queryString, (err) => {
+          if (err) o.error(err)
+          o.complete()
+        })
 
         query.on('row', (row) => o.next(row))
-        query.on('error', (err) => o.error(err))
-        query.on('end', () => o.complete())
+        // query.on('error', (err) => o.error(err))
+        // query.on('end', () => o.complete())
 
         return noop
       })

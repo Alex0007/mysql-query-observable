@@ -1,6 +1,6 @@
 {
   "name": "mysql-query-observable",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "function that creates Rx observable from query",
   "main": "dist/index.js",
   "typings": "typings/index.d.ts",
