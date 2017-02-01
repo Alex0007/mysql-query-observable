@@ -1,14 +1,16 @@
 import * as pg from 'pg'
+import { ConnectionConfig } from 'pg'
+
 import { Observable, Observer } from 'rxjs'
 import * as Debug from 'debug'
-import { QueryObservable, ConnectionOptions } from '../typings/index.d'
+import { QueryObservable } from '../typings/index.d'
 
 const debug = Debug('mysql-query-observable')
 const noop = () => undefined
 
 const POOL_CREATION_TIMEOUT: number = process.env.PGCONNECT_TIMEOUT || 10000
 
-export const createInstance = (connectionOptions?: ConnectionOptions): QueryObservable<any> => {
+export const createInstance = (connectionOptions?: ConnectionConfig): QueryObservable<any> => {
   let poolClient: pg.Client
 
   const poolClientInit: Promise<pg.Client> = new Promise((resolve, reject) => {
