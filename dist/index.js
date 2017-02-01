@@ -11,6 +11,9 @@ exports.createInstance = (connectionOptions) => {
         if (poolClient) {
             return resolve(poolClient);
         }
+        if (!connectionOptions && !process.env.PG_USER) {
+            return;
+        }
         const pool = new pg.Pool(Object.assign(connectionOptions ? connectionOptions : {}, {
             max: 100,
             idleTimeoutMillis: 500

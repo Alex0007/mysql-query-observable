@@ -12,9 +12,13 @@ const POOL_CREATION_TIMEOUT: number = process.env.PGCONNECT_TIMEOUT || 10000
 
 export const createInstance = (connectionOptions?: ConnectionConfig): QueryObservable<any> => {
   let poolClient: pg.Client
-
+  
   const poolClientInit: Promise<pg.Client> = new Promise((resolve, reject) => {
     if (poolClient) { return resolve(poolClient) }
+
+    if (!connectionOptions && !process.env.PG_USER) {
+      return
+    }
 
     const pool = new pg.Pool(Object.assign(connectionOptions ? connectionOptions : {}, {
       max: 100,
