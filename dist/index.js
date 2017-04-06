@@ -11,7 +11,8 @@ exports.createInstance = (connectionOptions) => {
         if (poolClient) {
             return resolve(poolClient);
         }
-        if (!connectionOptions && !process.env.PG_USER) {
+        if (!connectionOptions && !process.env.PGUSER) {
+            console.warn('Not found connection settings');
             return;
         }
         const pool = new pg.Pool(Object.assign(connectionOptions ? connectionOptions : {}, {

@@ -16,7 +16,8 @@ export const createInstance = (connectionOptions?: ConnectionConfig): QueryObser
   const poolClientInit: Promise<pg.Client> = new Promise((resolve, reject) => {
     if (poolClient) { return resolve(poolClient) }
 
-    if (!connectionOptions && !process.env.PG_USER) {
+    if (!connectionOptions && !process.env.PGUSER) {
+      console.warn('Not found connection settings')
       return
     }
 
