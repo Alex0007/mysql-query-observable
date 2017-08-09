@@ -1,10 +1,13 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const pg = require("pg");
 const rxjs_1 = require("rxjs");
 const Debug = require("debug");
 const debug = Debug('mysql-query-observable');
 const noop = () => undefined;
-const POOL_CREATION_TIMEOUT = process.env.PGCONNECT_TIMEOUT || 10000;
+const POOL_CREATION_TIMEOUT = process.env.PGCONNECT_TIMEOUT
+    ? parseInt(process.env.PGCONNECT_TIMEOUT)
+    : 10000;
 exports.createInstance = (connectionOptions) => {
     let poolClient;
     const poolClientInit = new Promise((resolve, reject) => {
@@ -51,5 +54,4 @@ exports.createInstance = (connectionOptions) => {
     };
 };
 exports.createObservableFromQuery = exports.createInstance();
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = exports.createObservableFromQuery;

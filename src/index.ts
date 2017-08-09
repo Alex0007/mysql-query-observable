@@ -8,11 +8,13 @@ import { QueryObservable } from '../typings/index.d'
 const debug = Debug('mysql-query-observable')
 const noop = () => undefined
 
-const POOL_CREATION_TIMEOUT: number = process.env.PGCONNECT_TIMEOUT || 10000
+const POOL_CREATION_TIMEOUT: number = process.env.PGCONNECT_TIMEOUT
+  ? parseInt(process.env.PGCONNECT_TIMEOUT)
+  : 10000
 
 export const createInstance = (connectionOptions?: ConnectionConfig): QueryObservable<any> => {
   let poolClient: pg.Client
-  
+
   const poolClientInit: Promise<pg.Client> = new Promise((resolve, reject) => {
     if (poolClient) { return resolve(poolClient) }
 
