@@ -27,7 +27,7 @@
   "dependencies": {
     "@types/pg": "^6.1.43",
     "debug": "^3.0.0",
-    "pg": "^7.1.0",
+    "pg": "6.x",
     "rxjs": "^5.4.2"
   },
   "devDependencies": {
